@@ -17,6 +17,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
 
 	@Override
 	public ClientDetails loadClientByClientId(String s) throws ClientRegistrationException {
+
 		return clientDetailsRepository.findByClientId(s).orElseThrow(() -> new InvalidGrantException("Bad credentials"));
 	}
 }

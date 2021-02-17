@@ -1,13 +1,15 @@
 package com.boilerplate.boilerplateapi.features.user.password.reset;
 
-import com.boilerplate.boilerplateapi.features.user.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,23 +17,18 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "password_tokens")
+@Document(collection = "password_tokens")
 @TypeAlias("PasswordToken")
 public class PasswordToken {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@MongoId
+	private ObjectId id;
 
-	@NotNull
-	@Type(type = "uuid-char")
+	@NotBlank
 	private UUID token;
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "user", referencedColumnName = "id")
-	private User user;
+	@NotBlank
+	private ObjectId user;
 
 	@NotNull
 	private LocalDateTime expiration;

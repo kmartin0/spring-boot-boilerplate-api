@@ -190,7 +190,7 @@ public class UserServiceImpl implements IUserService {
 			PasswordToken passwordToken = new PasswordToken(
 					null,
 					UUID.randomUUID(),
-					user,
+					user.getId(),
 					LocalDateTime.now(clock).plusDays(7)
 			);
 
@@ -222,7 +222,7 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		// Change the password and save.
-		User user = userRepository.findById(passwordToken.get().getUser().getId()).orElseThrow(() ->
+		User user = userRepository.findById(passwordToken.get().getUser()).orElseThrow(() ->
 				new ResourceNotFoundException(User.class, "id")
 		);
 

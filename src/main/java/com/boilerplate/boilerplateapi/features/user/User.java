@@ -5,23 +5,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "users")
+@Document(collection = "users")
+@TypeAlias("User")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@MongoId
+	private ObjectId id;
 
+	@Indexed(unique = true)
 	@NotBlank(groups = {Create.class, Update.class})
 	@Length(groups = {Create.class, Update.class}, min = 4, max = 24)
 	@NoWhitespace(groups = {Create.class, Update.class})
@@ -33,6 +37,7 @@ public class User {
 	@NotBlank(groups = {Create.class, Update.class})
 	private String lastName;
 
+	@Indexed(unique = true)
 	@NotBlank(groups = {Create.class, Update.class})
 	@Email(groups = {Create.class, Update.class})
 	private String email;

@@ -4,23 +4,19 @@ package com.boilerplate.boilerplateapi.security.authorizationserver.clientdetail
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "client_details")
+@Document(collection = "client_details")
 @TypeAlias("ClientDetailsImpl")
 public class ClientDetailsImpl implements ClientDetails {
 
-	@Id
 	private String clientId;
 	private String clientSecret;
 	private String scope;

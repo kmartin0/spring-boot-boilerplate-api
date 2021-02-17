@@ -14,6 +14,7 @@ import com.boilerplate.boilerplateapi.features.user.password.reset.PasswordToken
 import com.boilerplate.boilerplateapi.features.user.password.reset.PasswordTokenRepository;
 import com.boilerplate.boilerplateapi.features.user.password.reset.ResetPasswordDto;
 import com.boilerplate.boilerplateapi.utils.MessageResolver;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -322,7 +323,7 @@ class UserServiceTests {
 
 		Mockito.verify(passwordTokenRepository).save(argument.capture());
 		Assertions.assertEquals(LocalDateTime.now(fixedClock).plusDays(7), argument.getValue().getExpiration());
-		Assertions.assertEquals(user.getId(), argument.getValue().getUser().getId());
+		Assertions.assertEquals(user.getId(), argument.getValue().getUser());
 	}
 
 	@Test
@@ -347,7 +348,7 @@ class UserServiceTests {
 		Mockito.doReturn(fixedClock.instant()).when(clock).instant();
 		Mockito.doReturn(fixedClock.getZone()).when(clock).getZone();
 
-		PasswordToken passwordToken = new PasswordToken(0L, UUID.randomUUID(), user, LocalDateTime.now(clock).plusDays(3));
+		PasswordToken passwordToken = new PasswordToken(new ObjectId(), UUID.randomUUID(), user.getId(), LocalDateTime.now(clock).plusDays(3));
 		ResetPasswordDto resetPasswordDto = new ResetPasswordDto(passwordToken.getToken(), "newPass");
 
 		Mockito.when(passwordEncoder.encode(resetPasswordDto.getNewPassword())).thenReturn("newEncryptedPassword");
@@ -378,7 +379,7 @@ class UserServiceTests {
 		Mockito.doReturn(fixedClock.instant()).when(clock).instant();
 		Mockito.doReturn(fixedClock.getZone()).when(clock).getZone();
 
-		PasswordToken passwordToken = new PasswordToken(0L, UUID.randomUUID(), user, LocalDateTime.now(clock).plusDays(3));
+		PasswordToken passwordToken = new PasswordToken(new ObjectId(), UUID.randomUUID(), user.getId(), LocalDateTime.now(clock).plusDays(3));
 		ResetPasswordDto resetPasswordDto = new ResetPasswordDto(passwordToken.getToken(), "newPass");
 
 		Mockito.when(passwordTokenRepository.findByToken(passwordToken.getToken())).thenReturn(Optional.empty());
@@ -395,7 +396,7 @@ class UserServiceTests {
 		Mockito.doReturn(fixedClock.instant()).when(clock).instant();
 		Mockito.doReturn(fixedClock.getZone()).when(clock).getZone();
 
-		PasswordToken passwordToken = new PasswordToken(0L, UUID.randomUUID(), user, LocalDateTime.now(clock).minusDays(3));
+		PasswordToken passwordToken = new PasswordToken(new ObjectId(), UUID.randomUUID(), user.getId(), LocalDateTime.now(clock).minusDays(3));
 		ResetPasswordDto resetPasswordDto = new ResetPasswordDto(passwordToken.getToken(), "newPass");
 
 		Mockito.when(passwordTokenRepository.findByToken(passwordToken.getToken())).thenReturn(Optional.of(passwordToken));
@@ -412,7 +413,7 @@ class UserServiceTests {
 		Mockito.doReturn(fixedClock.instant()).when(clock).instant();
 		Mockito.doReturn(fixedClock.getZone()).when(clock).getZone();
 
-		PasswordToken passwordToken = new PasswordToken(0L, UUID.randomUUID(), user, LocalDateTime.now(clock).plusDays(3));
+		PasswordToken passwordToken = new PasswordToken(new ObjectId(), UUID.randomUUID(), user.getId(), LocalDateTime.now(clock).plusDays(3));
 		ResetPasswordDto resetPasswordDto = new ResetPasswordDto(passwordToken.getToken(), "newPass");
 
 		Mockito.when(passwordTokenRepository.findByToken(passwordToken.getToken())).thenReturn(Optional.of(passwordToken));
@@ -424,7 +425,7 @@ class UserServiceTests {
 
 	User createUser() {
 		return new User(
-				1L,
+				new ObjectId(),
 				"johndoe1",
 				"John",
 				"Doe",

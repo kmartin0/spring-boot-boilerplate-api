@@ -1,11 +1,11 @@
 package com.boilerplate.boilerplateapi.features.user.password.reset;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PasswordTokenRepository extends CrudRepository<PasswordToken, Long> {
+public interface PasswordTokenRepository extends MongoRepository<PasswordToken, Long> {
 
 	Optional<PasswordToken> findByToken(UUID token);
 

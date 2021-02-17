@@ -5,6 +5,7 @@ import com.boilerplate.boilerplateapi.features.email.EmailServiceImpl;
 import com.boilerplate.boilerplateapi.features.user.User;
 import com.boilerplate.boilerplateapi.features.user.password.reset.PasswordToken;
 import com.boilerplate.boilerplateapi.utils.MessageResolver;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +46,7 @@ public class EmailServiceTests {
 	@Test
 	void testSendForgotPasswordEmail_sendEmailWithResetLink() throws MessagingException, IOException {
 		User user = createUser();
-		PasswordToken passwordToken = new PasswordToken(0L, UUID.randomUUID(), user, LocalDateTime.now().plusDays(3));
+		PasswordToken passwordToken = new PasswordToken(new ObjectId(), UUID.randomUUID(), user.getId(), LocalDateTime.now().plusDays(3));
 
 		Mockito.when(javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
 		Mockito.when(messageResolver.getMessage("mail.forgot.password.subject")).thenReturn("Subject");
@@ -64,7 +65,7 @@ public class EmailServiceTests {
 
 	User createUser() {
 		return new User(
-				1L,
+				new ObjectId(),
 				"johndoe1",
 				"John",
 				"Doe",
