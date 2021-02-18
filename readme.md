@@ -68,9 +68,11 @@ To refactor the application from the boilerplate naming to your project needs, d
 
 
 2. Package and Module
-    - Change packages `com/boilerplate/boilerplateapi` to reflect new `groupId/artifactId`.
-    - Change `SpringBootApiBoilerplateApplication` and module to reflect the new `name`.
-    - In Intellij edit configuration `name` to reflect the new `name`.
+    - Refactor packages `com/boilerplate/boilerplateapi` to reflect new `groupId/artifactId`.
+    - Change `SpringBootApiBoilerplateApplication` the new `name`.
+    - In Intellij to change module name: Right click root folder > Refactor > Rename > Enter a new module name
+    - In Intellij to change configuration name: Edit Configurations > Spring Boot > SpringBootBoilerplateApplication > Name.
+    - In Intellij to change project name: File > Project Structure > Project Name
 
 ### 3.2. Security
 Users are authenticated and authorized using the OAuth 2 protocol and JWT. To enable this the following components are configured:
@@ -103,8 +105,9 @@ Note: Authorization header is a Basic Auth where `username=<CLIENT_ID>` and `pas
     --data-urlencode 'grant_type=refresh_token'
     ```
 
-The Authorization server supports JWT-encoded JWK-signed authorization and exposes a JWK Set URI. Follow the following steps to configure
-the keystore containing the KeyPair:
+The Authorization server supports JWT-encoded JWK-signed authorization and exposes a JWK Set URI. 
+A demo keypair is available in `resources/keystore/demo-dev-jwk.jks` and is configured in `application-dev.properties` to be used when the dev profile is active. 
+Follow the following steps to configure your own keystore containing the KeyPair:
 
 1.  Create keystore using the following command:
     ```
