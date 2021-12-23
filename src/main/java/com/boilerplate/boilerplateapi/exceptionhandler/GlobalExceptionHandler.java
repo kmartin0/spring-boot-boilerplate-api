@@ -10,6 +10,7 @@ import com.boilerplate.boilerplateapi.utils.MessageResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.CannotCreateTransactionException;
@@ -48,6 +49,14 @@ public class GlobalExceptionHandler {
 		);
 
 		return new ResponseEntity<>(responseBody, apiErrorCode.getHttpStatus());
+	}
+
+	// Handler for access denied exceptions.
+	@ExceptionHandler({AccessDeniedException.class})
+	public void handleAccessDeniedException(AccessDeniedException e) {
+		// Let an AccessDeniedException fall back to the Spring Security Handler.
+
+		throw e;
 	}
 
 	@ExceptionHandler({BadCredentialsException.class})
